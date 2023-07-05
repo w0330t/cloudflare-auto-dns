@@ -1,0 +1,6 @@
+domains = ['aaa.com', 'bbb.com', 'ccc.com']
+ad_guard_home_url = '192.168.1.1'
+ad_guard_home_port = 3000
+ad_guard_home_username = 'username'
+ad_guard_home_passwd = 'password'
+test_url = 'https://cf.xiu2.xyz/url'
