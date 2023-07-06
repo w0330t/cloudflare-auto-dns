@@ -1,0 +1,16 @@
+version: "3"
+services:
+  cloudflare-auto-dns:
+    build: . 
+    container_name: cloudflare-auto-dns
+    restart: always
+    networks:
+      - default
+        # br0:
+          # ipv4_address: 10.0.0.51
+
+networks:
+  default:
+    attachable: true
+  # br0:
+  #   external: true
