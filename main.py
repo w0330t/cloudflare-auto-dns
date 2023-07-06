@@ -1,4 +1,5 @@
 from adguardhome import AdGuardHome
+from typing import Union
 
 import pandas as pd
 import asyncio
@@ -7,32 +8,40 @@ import toml
 import os
 import logging
 
-def init_logger():
 
+def init_logger() -> logging.Logger:
+    """初始化日志记录器
+
+    Returns: 
+        logging.Logger: 返回一个配置好的日志记录器 
+    """ 
     # 配置日志级别
     logging.basicConfig(level=logging.DEBUG)
-
     # 创建日志记录器
     logger = logging.getLogger('logger')
-
     # 创建一个处理器，用于将日志保存到文件中
     file_handler = logging.FileHandler('log.txt')
     file_handler.setLevel(logging.DEBUG)
-
     # 创建一个格式化器，设置日志的格式
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
     # 把格式化器添加到处理器
     file_handler.setFormatter(formatter)
-
     # 把处理器添加到日志记录器
     logger.addHandler(file_handler)
-
     return logger
 
     
 
-def check_domain(domain, adguard_domain_list):
+def check_domain(domain:str, adguard_domain_list:dict) -> Union[dict, None]:
+    """检查域名是否存在
+
+    Args:
+        domain (str): 域名
+        adguard_domain_list (dict): adguard的域名列表
+
+    Returns:
+        Union[dict, None]: 返回域名对象
+    """ 
     for dic in adguard_domain_list:
         if dic['domain'] == domain:
             return dic
@@ -40,6 +49,8 @@ def check_domain(domain, adguard_domain_list):
 
 
 async def main():
+    """主程序
+    """
     # 导入config.toml
     config = toml.load('config.toml')
 
@@ -77,7 +88,18 @@ async def main():
         list = await adguard.request(uri='rewrite/list')
         logger.debug(list)
 
+        logger.info(f"Sleepe... Rerun after {config['loop_time']} seconds")
+        # 每次循环结束后等待
+        await asyncio.sleep(config['loop_time'])
+
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    task = asyncio.ensure_future(main())
+    try:
+        loop.run_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        task.cancel()
+        loop.close()
