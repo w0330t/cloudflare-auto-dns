@@ -89,9 +89,9 @@ async def main():
             list = await adguard.request(uri='rewrite/list')
             logger.debug(list)
 
-            logger.info(f"Sleepe... Rerun after {config['loop_time']} seconds")
+            logger.info(f"Sleepe... Rerun after {config['loop_sleep_time']} seconds")
             # 每次循环结束后等待
-            await asyncio.sleep(config['loop_time'])
+            await asyncio.sleep(config['loop_sleep_time'])
 
 
 if __name__ == "__main__":
