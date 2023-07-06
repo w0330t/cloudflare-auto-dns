@@ -2,7 +2,12 @@
 
 > 针对 Adguard Home 对 Cloudflare 的站点网络优化。
 
-本程序将调用 [CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest) 自动解析 Cloudflare 的最优质的IP解析并将其写入 Adguard Home 的 DNS 覆写，以便在访问指定网站或者服务的时候获得更加良好的体验。
+本程序将调用 [CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest) 自动解析 Cloudflare 针对当前用户网络的优化IP解析并将其写入 Adguard Home 的 DNS 覆写，以便在访问指定网站或者服务的时候获得更加良好的体验。
+
+## 相关项目
+
+* [Adguard Home](https://adguard.com/en/adguard-home/overview.html)
+* [CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest) 
 
 ## 使用指南
 
