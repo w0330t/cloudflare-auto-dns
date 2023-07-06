@@ -1,8 +1,10 @@
 # Cloudflare Auto DNS
 
-> 针对 Adguard Home 对 Cloudflare 的站点网络优化。
+> 使用 Adguard Home 对 Cloudflare 的站点网络优化。
 
 本程序将调用 [CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest) 自动解析 Cloudflare 针对当前用户网络的优化IP解析并将其写入 Adguard Home 的 DNS 覆写，以便在访问指定网站或者服务的时候获得更加良好的体验。
+
+我在本地部署了一堆cloudflare隧道的服务，但是体验太差，动辄延迟就到200了。遂造了个轮子，没啥技术含量。
 
 ## 相关项目
 
