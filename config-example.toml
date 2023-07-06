@@ -1,7 +1,20 @@
+# 需要修改的网站，支持*等匹配符号
 domains = ['aaa.com', 'bbb.com', 'ccc.com']
+
+# ad_guard_home的IP地址
 ad_guard_home_url = '192.168.1.1'
+
+# ad_guard_home的管理端口
 ad_guard_home_port = 3000
+
+# ad_guard_home的用户名
 ad_guard_home_username = 'username'
+
+# ad_guard_home的密码
 ad_guard_home_passwd = 'password'
+
+# 自建的测速下载地址，不改也行。具体可以看这里 https://github.com/XIU2/CloudflareSpeedTest/issues/168
 test_url = 'https://cf.xiu2.xyz/url'
-loop_time = '3600'
+
+# 循环的间隔时间，单位是秒，默认一个小时执行一次。
+loop_sleep_time = 3600
