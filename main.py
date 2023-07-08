@@ -58,7 +58,7 @@ async def main():
 
     while True:
         logger.info(f"Loop start.")
-        subprocess.run(['./CloudflareST', '-url', config['test_url']])
+        subprocess.run(['./CloudflareST', '-url', config['test_url'], '-t', config['test_ping_count'], '-tlr', config['test_packet_loss']])
 
         # 读取结果
         best_ip = pd.read_csv('result.csv').loc[0, 'IP 地址']

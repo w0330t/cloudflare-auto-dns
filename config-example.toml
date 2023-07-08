@@ -13,6 +13,12 @@ ad_guard_home_username = 'username'
 # ad_guard_home的密码
 ad_guard_home_passwd = 'password'
 
+# ping的次数
+test_ping_count = '10'
+
+# 丢包率上限
+test_packet_loss = '0.2'
+
 # 自建的测速下载地址，不改也行。具体可以看这里 https://github.com/XIU2/CloudflareSpeedTest/issues/168
 test_url = 'https://cf.xiu2.xyz/url'
 
