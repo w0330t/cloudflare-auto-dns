@@ -7,6 +7,7 @@ import subprocess
 import toml
 import os
 import logging
+import requests
 
 
 def init_logger() -> logging.Logger:
@@ -29,7 +30,6 @@ def init_logger() -> logging.Logger:
     # 把处理器添加到日志记录器
     logger.addHandler(file_handler)
     return logger
-
     
 
 def check_domain(domain:str, adguard_domain_list:dict) -> Union[dict, None]:
@@ -47,6 +47,24 @@ def check_domain(domain:str, adguard_domain_list:dict) -> Union[dict, None]:
             return dic
     return None
 
+def check_connect(test_url:str, max_delay:float) -> bool:
+    """检查连接是否可用并且响应时间是否在指定的最大延迟范围内
+
+    Args:
+        test_url (str): 要测试的URL
+        max_delay (float): 最大延迟时间（秒）
+
+    Returns:
+        bool: 如果连接可用并且响应时间小于最大延迟时间，则返回True；否则返回False
+    """
+    
+    res = requests.get(test_url)
+    if res.status_code == 200 and res.elapsed.total_seconds() < max_delay:
+        return True
+    else:
+        return False
+
+
 
 async def main():
     """主程序
@@ -58,10 +76,11 @@ async def main():
 
     while True:
         logger.info(f"Loop start.")
-        subprocess.run(['./CloudflareST', '-url', config['test_url'], '-t', config['test_ping_count'], '-tlr', config['test_packet_loss']])
+        subprocess.run(['./CloudflareST', '-url', config['test_download_url'], '-t', config['test_ping_count'], '-tlr', config['test_packet_loss']])
 
         # 读取结果
         best_ip = pd.read_csv('result.csv').loc[0, 'IP 地址']
+        os.remove('result.csv')
 
         async with AdGuardHome(host=config['ad_guard_home_url'], 
                             port=config['ad_guard_home_port'], 
@@ -81,17 +100,18 @@ async def main():
                         "update": put_data,
                     }
                     await adguard.request(uri='rewrite/update', method='PUT', json_data=update_data)
-                    logger.info(f'{domain} has been updated, ip is {best_ip}')
+                    # logger.info(f'{domain} has been updated, ip is {best_ip}')
                 else:
                     await adguard.request(uri='rewrite/add', method='POST', json_data=put_data)
-                    logger.info(f'{domain} has been added, ip is {best_ip}')
+                    # logger.info(f'{domain} has been added, ip is {best_ip}')
 
             list = await adguard.request(uri='rewrite/list')
-            logger.debug(list)
+            # logger.debug(list)
 
-            logger.info(f"Sleepe... Rerun after {config['loop_sleep_time']} seconds")
-            # 每次循环结束后等待
-            await asyncio.sleep(config['loop_sleep_time'])
+            logger.info(f"Update Cloudflare IP is {best_ip}")
+            
+            if check_connect(config['test_url'], config['test_max_delay']):
+                await asyncio.sleep(60)
 
 
 if __name__ == "__main__":

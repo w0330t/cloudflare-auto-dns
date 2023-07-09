@@ -19,8 +19,11 @@ test_ping_count = '10'
 # 丢包率上限
 test_packet_loss = '0.2'
 
-# 自建的测速下载地址，不改也行。具体可以看这里 https://github.com/XIU2/CloudflareSpeedTest/issues/168
-test_url = 'https://cf.xiu2.xyz/url'
+# 当该地址出现访问延迟较高时会重新获取ip
+test_url = 'https://code.wwtt.xyz'
 
-# 循环的间隔时间，单位是秒，默认一个小时执行一次。
-loop_sleep_time = 3600
+# 自建的测速下载地址，不改也行。具体可以看这里 https://github.com/XIU2/CloudflareSpeedTest/issues/168
+test_download_url = 'https://alist.wwtt.xyz/d/Unraid/Backup/SystemBackup/libvirt/libvirt.img?sign=v5s_EpqwzUdQL4U20nBXbMjn_fZh20cKfc_wWNpdo8Q=:0'
+
+# 最高延迟的秒数
+test_max_delay = 2.0
