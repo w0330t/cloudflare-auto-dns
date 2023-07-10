@@ -1,3 +1,4 @@
 toml
 pandas
 adguardhome
+requests

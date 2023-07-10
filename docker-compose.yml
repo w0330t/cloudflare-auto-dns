@@ -8,6 +8,8 @@ services:
       - default
         # br0:
           # ipv4_address: 10.0.0.51
+    volumes:
+      - ./:/usr/src/app
 
 networks:
   default:

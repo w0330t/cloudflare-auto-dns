@@ -47,23 +47,6 @@ def check_domain(domain:str, adguard_domain_list:dict) -> Union[dict, None]:
             return dic
     return None
 
-def check_connect(test_url:str, max_delay:float) -> bool:
-    """检查连接是否可用并且响应时间是否在指定的最大延迟范围内
-
-    Args:
-        test_url (str): 要测试的URL
-        max_delay (float): 最大延迟时间（秒）
-
-    Returns:
-        bool: 如果连接可用并且响应时间小于最大延迟时间，则返回True；否则返回False
-    """
-    
-    res = requests.get(test_url)
-    if res.status_code == 200 and res.elapsed.total_seconds() < max_delay:
-        return True
-    else:
-        return False
-
 
 async def check_and_update_domains(domain, best_ip, adguard):
     """
@@ -91,6 +74,25 @@ async def check_and_update_domains(domain, best_ip, adguard):
         await adguard.request(uri='rewrite/update', method='PUT', json_data=update_data)
     else:
         await adguard.request(uri='rewrite/add', method='POST', json_data=put_data)
+
+
+def check_connect(test_url:str, max_delay:float, logger:loggin.Logger) -> bool:
+    """检查连接是否可用并且响应时间是否在指定的最大延迟范围内
+
+    Args:
+        test_url (str): 要测试的URL
+        max_delay (float): 最大延迟时间（秒）
+
+    Returns:
+        bool: 如果连接可用并且响应时间小于最大延迟时间，则返回True；否则返回False
+    """
+    
+    res = requests.get(test_url)
+    if res.status_code == 200 and res.elapsed.total_seconds() < max_delay:
+        loger.info(f"Delay is {res.elapsed.total_seconds()} seconds")
+        return True
+    else:
+        return False
 
 
 async def main():
