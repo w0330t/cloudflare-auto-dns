@@ -127,7 +127,7 @@ async def main():
 
                 logger.info(f"Update Cloudflare IP is {best_ip}")
 
-            if check_connect(config['test_url'], config['test_max_delay']):
+            if check_connect(config['test_url'], config['test_max_delay'], logger):
                 await asyncio.sleep(60)
 
         except FileExistsError as e:
