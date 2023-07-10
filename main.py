@@ -76,7 +76,7 @@ async def check_and_update_domains(domain, best_ip, adguard):
         await adguard.request(uri='rewrite/add', method='POST', json_data=put_data)
 
 
-def check_connect(test_url:str, max_delay:float, logger:loggin.Logger) -> bool:
+def check_connect(test_url:str, max_delay:float, logger:logging.Logger) -> bool:
     """检查连接是否可用并且响应时间是否在指定的最大延迟范围内
 
     Args:
