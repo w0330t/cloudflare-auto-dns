@@ -8,6 +8,7 @@ import toml
 import os
 import logging
 import requests
+import re
 
 
 def init_logger() -> logging.Logger:
@@ -17,7 +18,7 @@ def init_logger() -> logging.Logger:
         logging.Logger: 返回一个配置好的日志记录器 
     """ 
     # 配置日志级别
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     # 创建日志记录器
     logger = logging.getLogger('logger')
     # 创建一个处理器，用于将日志保存到文件中
@@ -86,10 +87,10 @@ def check_connect(test_url:str, max_delay:float, logger:logging.Logger) -> bool:
     Returns:
         bool: 如果连接可用并且响应时间小于最大延迟时间，则返回True；否则返回False
     """
-    
+    test_url = re.match(r'(https?://[^/]+)', test_url).group(1)
     res = requests.get(test_url)
     if res.status_code == 200 and res.elapsed.total_seconds() < max_delay:
-        loger.info(f"Delay is {res.elapsed.total_seconds()} seconds")
+        logger.info(f"Delay is {res.elapsed.total_seconds()} seconds")
         return True
     else:
         return False
@@ -110,10 +111,13 @@ async def main():
         os.chdir(sub_path)
 
     while True:
-        logger.info("Loop start.")
+        logger.info("Start check best ip")
 
         # 运行 CloudflareST 程序
-        subprocess.run(['./CloudflareST', '-url', config['test_download_url'], '-t', config['test_ping_count'], '-tlr', config['test_packet_loss']])
+        result = subprocess.run(['./CloudflareST','-httping', '-url', config['test_url'], '-t', config['test_ping_count'], '-tlr', config['test_packet_loss']], \
+                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        logger.info(result.stdout)  # 将子进程的标准输出添加到日志
+        logger.debug(result.stderr)  # 将子进程的错误输出添加到日志
 
         try: 
             # 读取并删除 result.csv 文件
