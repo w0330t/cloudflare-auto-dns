@@ -4,16 +4,6 @@ services:
     build: . 
     container_name: cloudflare-auto-dns
     restart: always
-    networks:
-      - default
-        # br0:
-          # ipv4_address: 10.0.0.51
+    network_mode: "bridge"
     volumes:
       - ./:/usr/src/app
-    
-
-networks:
-  default:
-    attachable: true
-  # br0:
-  #   external: true
