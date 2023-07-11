@@ -101,7 +101,13 @@ async def main():
     """
     config = toml.load('config.toml')
     logger = init_logger()
-    os.chdir('CloudflareSpeedTest/')
+
+    main_path = '/CloudflareSpeedTest/'
+    sub_path = 'CloudflareSpeedTest/'
+    if os.path.exists(main_path):
+        os.chdir(main_path)
+    else:
+        os.chdir(sub_path)
 
     while True:
         logger.info("Loop start.")
