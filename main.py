@@ -18,7 +18,7 @@ def init_logger() -> logging.Logger:
         logging.Logger: 返回一个配置好的日志记录器 
     """ 
     # 配置日志级别
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     # 创建日志记录器
     logger = logging.getLogger('logger')
     # 创建一个处理器，用于将日志保存到文件中
@@ -141,7 +141,7 @@ async def main():
             while check_connect(config['test_url'], config['test_max_delay'], logger):
                 await asyncio.sleep(60)
 
-        except FileExistsError as e:
+        except (FileNotFoundError, FileExistsError) as e:
             logger.warning(str(e))
             continue
 
