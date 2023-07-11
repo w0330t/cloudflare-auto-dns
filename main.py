@@ -18,7 +18,7 @@ def init_logger() -> logging.Logger:
         logging.Logger: 返回一个配置好的日志记录器 
     """ 
     # 配置日志级别
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
     # 创建日志记录器
     logger = logging.getLogger('logger')
     # 创建一个处理器，用于将日志保存到文件中
@@ -111,11 +111,12 @@ async def main():
         os.chdir(sub_path)
 
     while True:
-        logger.info("Start check best ip")
+        logger.info("Start check ip")
 
         # 运行 CloudflareST 程序
         result = subprocess.run(['./CloudflareST','-httping', '-url', config['test_url'], '-t', config['test_ping_count'], '-tlr', config['test_packet_loss']], \
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        logger.info("check complete")
         logger.info(result.stdout)  # 将子进程的标准输出添加到日志
         logger.debug(result.stderr)  # 将子进程的错误输出添加到日志
 
