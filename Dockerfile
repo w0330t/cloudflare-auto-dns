@@ -2,7 +2,7 @@ FROM python:3
 
 WORKDIR /usr/src/app
 
-RUN mkdir CloudflareSpeedTest && \
+RUN mkdir /CloudflareSpeedTest && \
     wget -q -O - "https://github.com/XIU2/CloudflareSpeedTest/releases/download/v2.2.4/CloudflareST_linux_amd64.tar.gz" \
     | tar -xzf - -C  /CloudflareSpeedTest && \
     chmod -R +x /CloudflareSpeedTest
